@@ -22,5 +22,5 @@ from dish.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index, name='index'),
-    path('dish/', dishs, name='dish'),
+    path('dish/', dishes, name='dish'),
 ]
