@@ -1,5 +1,6 @@
 from django.shortcuts import render
 
+from dish.models import *
 
 # Create your views here.
 
@@ -13,26 +14,8 @@ def index(request):
 
 def dishes(request):
     context = {
-        'title': 'Dish',
-        'dish': [
-            {
-                'img': '/static/vendor/img/dishes/Adidas-hoodie.png',
-                'name': 'Худи черного цвета с монограммами adidas Originals',
-                'price': 6090,
-                'description': 'Мягкая ткань для свитшотов. Стиль и комфорт – это образ жизни.',
-            },
-            {
-                'img': '/static/vendor/img/dishes/Adidas-hoodie.png',
-                'name': 'Худи черного цвета с монограммами adidas Originals',
-                'price': 6090,
-                'description': 'Мягкая ткань для свитшотов. Стиль и комфорт – это образ жизни.',
-            },
-            {
-                'img': '/static/vendor/img/dishes/Adidas-hoodie.png',
-                'name': 'Худи черного цвета с монограммами adidas Originals',
-                'price': 6090,
-                'description': 'Мягкая ткань для свитшотов. Стиль и комфорт – это образ жизни.',
-            },
-        ]
+        'title': 'Dishes',
+        'dish': Dish.objects.all(),
+        'category': TypeDish.objects.all(),
     }
     return render(request, 'dish/html/dishs.html', context=context)
