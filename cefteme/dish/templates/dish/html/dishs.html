@@ -65,7 +65,13 @@
                                 <a href="#">{{ product.name }}</a>
                             </h4>
                             <h5>{{ product.price }}</h5>
-                            <p class="card-text"></p>
+                            <p class="card-text">
+                                {% for str in struct %}
+                                    {% if str.id_dish.pk == product.pk %}
+                                        {{ str.id_ingredient.name }}{% if not loop.last %},{% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            </p>
                         </div>
                         <div class="card-footer text-center">
                             <button type="button" class="btn btn-outline-success">Отправить в корзину</button>

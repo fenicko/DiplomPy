@@ -16,6 +16,7 @@ def dishes(request):
     context = {
         'title': 'Dishes',
         'dish': Dish.objects.all(),
+        'struct': Structure.objects.all(),
         'category': TypeDish.objects.all(),
     }
     return render(request, 'dish/html/dishs.html', context=context)

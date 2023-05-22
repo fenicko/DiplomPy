@@ -1,4 +1,5 @@
 from django.db import models
+from django.core import serializers
 
 import users.models
 from users.models import *
