@@ -14,8 +14,8 @@
 
             <h1 class="my-4">Store</h1>
             <div class="list-group">
-                {% for type in category %}
-                    <a href="#" class="list-group-item">{{ type.name }}</a>
+                {% for types in type %}
+                    <a href="#" class="list-group-item">{{ types.name }}</a>
                 {% endfor %}
             </div>
 
@@ -68,13 +68,15 @@
                             <p class="card-text">
                                 {% for str in struct %}
                                     {% if str.id_dish.pk == product.pk %}
-                                        {{ str.id_ingredient.name }}{% if not loop.last %},{% endif %}
+                                        {{ str.id_ingredient.name }}{% if struct.last %},{% endif %}
                                     {% endif %}
                                 {% endfor %}
                             </p>
                         </div>
                         <div class="card-footer text-center">
-                            <button type="button" class="btn btn-outline-success">Отправить в корзину</button>
+                            <a class="btn btn-outline-success" href="{% url 'dish:basket_add' product.id %}">
+                                Отправить в корзину
+                            </a>
                         </div>
                     </div>
                 </div>
