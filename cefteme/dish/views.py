@@ -1,4 +1,5 @@
 from django.shortcuts import render, HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
 
 from dish.models import *
 
@@ -22,6 +23,7 @@ def dishes(request):
     return render(request, 'dish/html/dishs.html', context=context)
 
 
+@login_required
 def basket_add(request, dish_id):
     dish = Dish.objects.get(id=dish_id)
     baskets = Basket.objects.filter(users=request.user, dish=dish)
@@ -35,6 +37,8 @@ def basket_add(request, dish_id):
 
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
+
+@login_required
 def basket_remove(request, basket_id):
     basket = Basket.objects.get(id=basket_id)
     basket.delete()
