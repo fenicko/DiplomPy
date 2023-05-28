@@ -27,6 +27,12 @@ class Dish(models.Model):
     image = models.ImageField(upload_to='dishes_images')
     price = models.DecimalField(max_digits=6, decimal_places=2)
 
+    def get_ingredients(self):
+        # Получаем все связанные ингредиенты для данного блюда
+        structure_items = Structure.objects.filter(id_dish=self)
+        ingredients = [item.id_ingredient for item in structure_items]
+        return ingredients
+
     def __str__(self):
         return f'Блюдо: {self.name} | Категория: {self.id_type_dish.name}'
 

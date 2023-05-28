@@ -6,6 +6,7 @@
 {% endblock %}
 
 {% block content %}
+
     <div class="container">
 
     <div class="row">
@@ -15,7 +16,7 @@
             <h1 class="my-4">Tavern</h1>
             <div class="list-group">
                 {% for types in type %}
-                    <a href="#" class="list-group-item">{{ types.name }}</a>
+                    <a href="{% url 'dish:type' types.id %}" class="list-group-item">{{ types.name }}</a>
                 {% endfor %}
             </div>
 
@@ -30,6 +31,8 @@
                     <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
                     <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
                 </ol>
+
+                </address>
                 <div class="carousel-inner" role="listbox">
                     <div class="carousel-item active">
                         <img class="d-block img-fluid" src="/static/vendor/img/slides/borsh.jpg" alt="First slide">
@@ -65,11 +68,22 @@
                                 <a href="#">{{ product.name }}</a>
                             </h4>
                             <h5>{{ product.price }}</h5>
-                            <p class="card-text">
-                                {% for str in struct %}
-                                    {% if str.id_dish.pk == product.pk %}
-                                        {{ str.id_ingredient.name }}{% if struct.last %},{% endif %}
-                                    {% endif %}
+
+                            <script>
+                                window.onload = function() {
+                                    var paragraphs = document.getElementsByClassName('card-text');
+                                    for (var i = 0; i < paragraphs.length; i++) {
+                                      var paragraph = paragraphs[i];
+                                      var text = paragraph.innerText;
+                                      var newText = text.slice(0, -1) + '.';
+                                      paragraph.innerText = newText;
+                                    }
+                                };
+                            </script>
+
+                            <p class="card-text" id="myParagraph">
+                                {% for get_ingredient in product.get_ingredients %}
+                                    {{ get_ingredient.name }}{% if not loop.last %},{% endif %}
                                 {% endfor %}
                             </p>
                         </div>
@@ -86,14 +100,23 @@
 
             <nav aria-label="Page navigation example">
                 <ul class="pagination justify-content-center">
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                    <li class="page-item {% if not dish.has_previous %} disabled {% endif %}">
+                        <a class="page-link" href="{% if dish.has_previous %} {% url 'dish:paginator' dish.previous_page_number %} {% else %} # {% endif %}"
+                           tabindex="-1" aria-disabled="true">
+                            Предыдущая
+                        </a>
                     </li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">Next</a>
+                    {% for page in dish.paginator.page_range %}
+                        <li class="page-item">
+                            <a class="page-link" href="{% url 'dish:paginator' page %}">
+                                {{ page }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                    <li class="page-item {% if not dish.has_next %} disabled {% endif %}">
+                        <a class="page-link" href="{% if dish.has_next %} {% url 'dish:paginator' dish.next_page_number %} {% else %} # {% endif %}">
+                            Следующая
+                        </a>
                     </li>
                 </ul>
             </nav>

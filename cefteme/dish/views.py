@@ -1,5 +1,6 @@
 from django.shortcuts import render, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 
 from dish.models import *
 
@@ -13,13 +14,18 @@ def index(request):
     return render(request, 'dish/html/index.html', context=context)
 
 
-def dishes(request):
-    context = {
-        'title': 'Dishes',
-        'dish': Dish.objects.all(),
-        'type': TypeDish.objects.all(),
-        'struct': Structure.objects.all(),
-    }
+def dishes(request, type_id=None, page_number=1):
+    dishes = Dish.objects.filter(id_type_dish=type_id) if type_id else Dish.objects.all()
+
+    per_page = 3
+    paginator = Paginator(dishes, per_page)
+    dishes_paginator = paginator.page(page_number)
+
+    context = {'title': 'Dishes',
+               'type': TypeDish.objects.all(),
+               'struct': Structure.objects.all(),
+               'dish': dishes_paginator,
+               }
     return render(request, 'dish/html/dishs.html', context=context)
 
 
