@@ -1,0 +1,35 @@
+.img-dish{
+    max-height: 100%;
+    max-width: 100%;
+}
+
+.dish-title{
+    text-align: center;
+}
+
+.dish-block{
+    -ms-flex: 0 0 25%;
+    flex: 0 0 25%;
+    max-width: 25%;
+    margin-top: 50px;
+}
+
+/* Стили для комментариев */
+.comment {
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+
+.comment .author {
+    font-weight: bold;
+}
+
+.comment .timestamp {
+    color: #666;
+    font-size: 0.8em;
+}
+
+.comment .message {
+    margin-top: 5px;
+}

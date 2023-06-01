@@ -16,7 +16,7 @@
             <h1 class="my-4">Tavern</h1>
             <div class="list-group">
                 {% for types in type %}
-                    <a href="{% url 'dish:type' types.id %}" class="list-group-item">{{ types.name }}</a>
+                    <a href="{{ types.get_absolute_url }}" class="list-group-item">{{ types.name }}</a>
                 {% endfor %}
             </div>
 
@@ -65,9 +65,17 @@
                         </a>
                         <div class="card-body">
                             <h4 class="card-title">
-                                <a href="#">{{ product.name }}</a>
+                                <a href="{{ product.get_absolute_url }}">{{ product.name }}</a>
                             </h4>
-                            <h5>{{ product.price }}</h5>
+                            <h6>
+                                <img src="/static/vendor/img/review/starF.png" height="15" width="15">
+                                {% for item in review_counts %}
+                                    {% if item.id_dish == product.pk %}
+                                        5/{{ item.average_estimation }}
+                                    {% endif %}
+                                {% endfor %}
+                            </h6>
+                            <h5>Цена: {{ product.price }}p.</h5>
 
                             <script>
                                 window.onload = function() {
