@@ -3,6 +3,8 @@ from django.core import serializers
 from django.urls import reverse
 from django.db.models import Count, Sum, Avg, Func
 
+from decimal import Decimal
+
 import users.models
 from users.models import *
 # Create your models here.
@@ -43,6 +45,27 @@ class Dish(models.Model):
     def get_absolute_url(self):
         return reverse('dishes:dish', kwargs={'dish_slug': self.slug})
 
+    def filter_ingredients(self):
+        ingredients = Structure.objects.filter(id_dish=self.pk).values('id_ingredient')
+        not_match_ingredients = Ingredients.objects.exclude(structure__id_dish=self.pk, structure__id_ingredient__in=ingredients)
+        return not_match_ingredients
+
+
+class ComplexDish(models.Model):
+    name = models.CharField(max_length=182, null=True)
+    image = models.ImageField(upload_to='dishes_images')
+    price = models.DecimalField(max_digits=6, decimal_places=2)
+    slug = models.SlugField(max_length=255, unique=True, db_index=True)
+    quantity = models.PositiveIntegerField(default=0)
+
+
+class DishComplexDish(models.Model):
+    dish = models.ForeignKey(Dish, on_delete=models.PROTECT)
+    complex_dish = models.ForeignKey(ComplexDish, on_delete=models.PROTECT)
+
+    class Meta:
+        db_table = 'dish_complex_dish'
+
 
 class TypeDish(models.Model):
     name = models.CharField(max_length=128)
@@ -64,8 +87,8 @@ class BasketQuerySet(models.QuerySet):
 
 
 class Basket(models.Model):
-    users = models.ForeignKey(User, on_delete=models.CASCADE)
-    dish = models.ForeignKey(Dish, on_delete=models.CASCADE)
+    users = models.ForeignKey(User, on_delete=models.PROTECT)
+    dish = models.ForeignKey(Dish, on_delete=models.PROTECT)
     quantity = models.PositiveSmallIntegerField(default=0)
     create_timestamp = models.DateTimeField(auto_now_add=True)
 
@@ -75,7 +98,7 @@ class Basket(models.Model):
         return f'Корзина для {self.users.username} | Блюдо: {self.dish.name}'
 
     def sum(self):
-        return self.dish.price * self.quantity
+        return self.dish.price * Decimal(self.quantity)
 
 
 class Round(Func):
@@ -84,14 +107,14 @@ class Round(Func):
 
 
 class Reviews(models.Model):
-    id_user = models.ForeignKey(User, on_delete=models.CASCADE)
-    id_dish = models.ForeignKey(Dish, on_delete=models.CASCADE)
+    id_user = models.ForeignKey(User, on_delete=models.PROTECT)
+    id_dish = models.ForeignKey(Dish, on_delete=models.PROTECT)
     estimation = models.PositiveSmallIntegerField(default=0)
     description = models.TextField(blank=True)
     date_create = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.estimation
+        return f'Пользователь: {self.id_user.username} | Блюдо: {self.id_dish.name} | Оценка: {self.estimation}'
 
     @classmethod
     def get_estimation_sum_per_dish(cls):

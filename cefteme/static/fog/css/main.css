@@ -1,0 +1,31 @@
+.ingredient-link + .ingredient-link {
+    margin-left: 10px;
+}
+
+.ingredient-link:first-child {
+    margin-left: 0;
+}
+
+.no-bullets {
+    list-style-type: none;
+}
+
+.scrollable-review {
+    overflow: auto;
+    height: 1000px;
+}
+
+.scrollable-ingredient {
+    overflow: auto;
+    height: 500px;
+}
+
+.c-button {
+  appearance: none;
+  border: 0;
+  border-radius: 5px;
+  background: #4676D7;
+  color: #fff;
+  padding: 8px 16px;
+  font-size: 16px;
+}

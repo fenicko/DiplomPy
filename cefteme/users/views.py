@@ -45,6 +45,7 @@ def profile(request):
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse('users:profile'))
+
     else:
         form = UserProfileForm(instance=request.user)
 
@@ -52,7 +53,7 @@ def profile(request):
                'form': form,
                'baskets': Basket.objects.filter(users=request.user),
                }
-    return render(request, 'users/profile.html', context=context)
+    return render(request, 'users/profile2.html', context=context)
 
 
 def logout(request):

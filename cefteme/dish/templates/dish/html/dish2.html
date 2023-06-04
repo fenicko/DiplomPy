@@ -1,0 +1,145 @@
+{% extends 'dish/html/base2.html' %}
+{% load static %}
+
+{% block meta %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="Оставьте отзыв:, Редактор блюд">
+    <meta name="description" content="">
+    <title>Блюдо</title>
+    <link rel="stylesheet" href="{% static 'fog/css/nicepage.css' %}" media="screen">
+    <link rel="stylesheet" href="{% static 'fog/css/Блюдо.css' %}" media="screen">
+    <link rel="stylesheet" href="{% static 'fog/css/main.css' %}" media="screen">
+    <script class="u-script" type="text/javascript" src="{% static 'fog/js/jquery.js' %}" defer=""></script>
+    <script class="u-script" type="text/javascript" src="{% static 'fog/js/nicepage.js' %}" defer=""></script>
+    <meta name="generator" content="Nicepage 5.10.10, nicepage.com">
+    <link id="u-theme-google-font" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i|Open+Sans:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i">
+{% endblock %}
+
+
+{% block content %}
+    <section class="u-clearfix u-section-1" id="sec-8a34">
+      <div class="u-clearfix u-sheet u-valign-middle-lg u-valign-middle-sm u-valign-middle-xl u-valign-middle-xs u-sheet-1">
+        <div class="u-clearfix u-expanded-width-xs u-gutter-10 u-layout-wrap u-layout-wrap-1">
+          <div class="u-layout">
+            <div class="u-layout-row">
+              <div class="u-size-47">
+                <div class="u-layout-col">
+                  <div class="u-size-30">
+                    <div class="u-layout-row">
+                      <div class="u-container-style u-grey-5 u-layout-cell u-size-30 u-layout-cell-1">
+                        <div class="u-container-layout u-valign-top-md u-valign-top-sm u-container-layout-1">
+                          <img class="u-align-center u-image u-image-default u-image-1" src="{{ dish.image.url }}" alt="" data-image-width="2560" data-image-height="1707">
+                          <h4 class="u-align-center u-text u-text-1">{{ dish.name }}</h4>
+                          <div class="u-clearfix u-container-align-center u-group-elements u-group-elements-1">
+                            <h5 class="u-align-center u-text u-text-2">
+                            <img src="/static/vendor/img/review/starF.png" height="20" width="20">
+                                {% for item in review_counts %}
+                                    {% if item.id_dish == dish.pk %}
+                                        {{ item.average_estimation }} / 5 ({{ item.count_estimation }})
+                                    {% endif %}
+                                {% endfor %}
+                            </h5>
+                          </div>
+                          <h6 class="u-align-center u-text u-text-3">{{ dish.price }} руб.</h6>
+                          <div class="u-container-style u-expanded-width u-grey-5 u-group u-group-1">
+                            <div class="u-container-layout u-container-layout-2">
+                              <p class="u-text u-text-default u-text-4">
+                                    Состав:
+                                  {% for get_ingredient in dish.get_ingredients %}
+                                    <a href="{% url 'dishes:action_ingredient' dish.slug get_ingredient.pk %}" class="u-btn u-btn-round u-button-style u-hover-palette-1-light-1 u-palette-1-light-2 u-radius-50 u-btn-1 ingredient-link">
+                                        {{ get_ingredient.name }}
+                                        <span class="u-file-icon u-icon u-icon-2">
+                                            <img src="{% static 'fog/img/1828666.png' %}" alt="">
+                                        </span>
+                                    </a>
+                                {% endfor %}
+                              </p>
+
+                            </div>
+                          </div>
+                          <a href="" class="u-border-2 u-border-hover-palette-1-base u-border-palette-1-base u-btn u-btn-round u-button-style u-hover-palette-1-base u-none u-radius-50 u-btn-2">Редактировать</a>
+                        </div>
+                      </div>
+                      <div class="u-container-style u-grey-5 u-layout-cell u-size-30 u-layout-cell-2">
+                        <div class="u-container-layout u-container-layout-3">
+                          <h3 class="u-align-center u-text u-text-default u-text-5">Ингридиенты</h3>
+                            <div class="scrollable-ingredient">
+                                <ul class="u-align-center u-text u-text-default u-text-6">
+                              {% for ingredient in dish.filter_ingredients %}
+
+                                      <li class="no-bullets">
+                                          <a href="{% url 'dishes:action_ingredient' dish.slug ingredient.pk %}">{{ ingredient.name }}</a>
+                                      </li>
+
+                              {% endfor %}
+                          </ul>
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="u-size-30">
+                    <div class="u-layout-row">
+                      <div class="u-container-style u-grey-5 u-layout-cell u-size-60 u-layout-cell-3">
+                        <div class="u-container-layout u-container-layout-4">
+                          <h2 class="u-align-center u-text u-text-default u-text-7">Оставте отзыв:</h2>
+                            <form action="{% url 'dish:dish' dish.slug %}" method="post">
+                           {% csrf_token %}
+
+                            <div>{{ form.non_field_errors }}</div>
+
+                            {% for f in form %}
+                                <p><label for="{{ f.id_for_label }}">{{ f.label }}: </label>{{ f }}</p>
+                                <div class="error-decor">{{ f.errors }}</div>
+                            {% endfor %}
+
+                            <button class="c-button" type="submit">Отправить</button>
+                        </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="u-size-13">
+                <div class="u-layout-col">
+                  <div class="u-container-style u-grey-5 u-layout-cell u-size-60 u-layout-cell-4">
+                    <div class="u-container-layout u-container-layout-5">
+                      <h3 class="u-align-center u-text u-text-8">Комментарии</h3>
+                        <div class="scrollable-review">
+                            {% for comm in review %}
+                                {% if comm.id_dish.pk == dish.pk %}
+                                    <div class="u-border-1 u-border-grey-30 u-container-style u-group u-group-2">
+                                        <div class="u-container-layout u-container-layout-6">
+                                            <p style="margin-left: 10px" class="u-align-left u-text u-text-default u-text-9">{{ comm.date_create }}</p>
+                                            <h6 class="u-text u-text-default u-text-10">{{ comm.id_user.username }}</h6>
+                                            <div class="u-clearfix u-group-elements u-group-elements-2">
+                                                <p class="u-text u-text-default u-text-11">{{ comm.estimation }} / 5</p>
+                                                <span class="u-icon u-icon-3">
+                                                    <svg class="u-svg-link" preserveAspectRatio="xMidYMin slice" viewBox="0 0 53.867 53.867" style="">
+                                                        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#svg-c032"></use>
+                                                    </svg>
+                                                    <svg class="u-svg-content" viewBox="0 0 53.867 53.867" x="0px" y="0px" id="svg-c032" style="enable-background:new 0 0 53.867 53.867;">
+                                                        <polygon style="fill:currentColor;" points="26.934,1.318 35.256,18.182 53.867,20.887 40.4,34.013 43.579,52.549 26.934,43.798
+                                                        10.288,52.549 13.467,34.013 0,20.887 18.611,18.182 ">
+                                                        </polygon>
+                                                    </svg>
+                                                </span>
+                                            </div>
+                                            <p class="u-text u-text-12">{{ comm.description }}</p>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+{% endblock %}
