@@ -75,6 +75,8 @@
                 <script>
                     var basketUpdateURL = "{% url 'dish:basket_update' %}";
                 </script>
+{% if baskets %}
+
 
                     {% for basket in baskets %}
                   <div class="u-list u-list-1">
@@ -86,23 +88,30 @@
                                     <img src="{% static 'fog/img/3156999.png' %}" alt="">
                                 </a>
                             </span>
-                          <img class="u-image u-image-default u-image-2" src="{{ basket.dish.image.url }}" alt="" data-image-width="2560" data-image-height="1707">
-                          <h5 class="u-text u-text-default u-text-3">{{ basket.dish.name }}</h5>
-                          <p class="u-text u-text-default u-text-4">{{ basket.sum }} руб.</p>
-                          <p class="u-text u-text-default u-text-5">
+                          <img class="u-image u-image-default u-image-2" src="{{ basket.content_object.image.url }}" alt="" data-image-width="2560" data-image-height="1707">
+                          <h5 class="u-text u-text-default u-text-3">{{ basket.content_object.name }}</h5>
+                          <p class="u-text u-text-default u-text-4 sum" id="sum">
+                              {% if basket.get_content_object_model_name == 'dish' %}
+                                  {{ basket.sum_dish }}
+                              {% else %}
+                                    {{ basket.sum_complex_dish }}
+                              {% endif %}
+                              руб.</p>
+                          <p class="u-text u-text-default u-text-5" id="quntity">
                               <input style="width: 50px; height: 25px" name="basketID" type="number" class="form-control"
-                                       value="{{ basket.quantity }}" min="0" data-id="{{ basket.pk }}">
+                                       value="{{ basket.quantity }}" min="1" data-id="{{ basket.pk }}" onclick="updateBasket(this)">
                           </p>
                         </div>
                       </div>
                     </div>
                   </div>
                     {% endfor %}
-
+    {% else %}
+    <h2 style="text-align: center; margin-top: 30vh">Корзина пуста</h2>
+{% endif %}
                   <div class="u-border-3 u-border-grey-40 u-container-style u-group u-group-1">
                     <div class="u-container-layout">
-                      <h5 class="u-align-center u-text u-text-default u-text-6">{{ baskets.total_sum }} руб.<span style="font-weight: 700;"></span>
-                      </h5>
+                        <h5 class="u-align-center u-text u-text-default u-text-6" id="totalSum"><span style="font-weight: 700;"></span></h5>
                       <h1 class="u-align-center u-text u-text-default u-text-7">Итого:</h1>
                     </div>
                   </div>

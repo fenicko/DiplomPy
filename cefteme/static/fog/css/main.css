@@ -1,9 +1,13 @@
 .ingredient-link + .ingredient-link {
-    margin-left: 10px;
+    margin-bottom: 10px;
 }
 
 .ingredient-link:first-child {
     margin-left: 0;
+}
+
+.dish-item {
+    --margin-left: 20px;
 }
 
 .no-bullets {
@@ -27,5 +31,132 @@
   background: #4676D7;
   color: #fff;
   padding: 8px 16px;
-  font-size: 16px;
+  font-size: 15px;
+
+}
+
+
+.rounded-button {
+    display: inline-block;
+    border-radius: 20px;
+    background-color: #6495ED;
+    padding: 2px 10px;
+    text-align: center;
+    transition: background-color 0.3s ease;
+    font-size: 12px;
+    margin: 2px;
+}
+
+.rounded-button:hover {
+    background-color: #4676F7; /* Измените цвет на нужный вам при наведении */
+}
+
+.rounded-button a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 15px;
+}
+
+.custom-btn {
+  width: 130px;
+  height: 40px;
+  color: #fff;
+  border-radius: 5px;
+  padding: 10px 25px;
+  font-family: 'Lato', sans-serif;
+  font-weight: 500;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  display: inline-block;
+   box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
+   7px 7px 20px 0px rgba(0,0,0,.1),
+   4px 4px 5px 0px rgba(0,0,0,.1);
+  outline: none;
+}
+.btn-7 {
+background: linear-gradient(0deg, rgba(255,151,0,1) 0%, rgba(251,75,2,1) 100%);
+  line-height: 42px;
+  padding: 0;
+  border: none;
+}
+.btn-7 span {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.btn-7:before,
+.btn-7:after {
+  position: absolute;
+  content: "";
+  right: 0;
+  bottom: 0;
+  background: rgba(251,75,2,1);
+  box-shadow:
+   -7px -7px 20px 0px rgba(255,255,255,.9),
+   -4px -4px 5px 0px rgba(255,255,255,.9),
+   7px 7px 20px 0px rgba(0,0,0,.2),
+   4px 4px 5px 0px rgba(0,0,0,.3);
+  transition: all 0.3s ease;
+}
+.btn-7:before{
+   height: 0%;
+   width: 2px;
+}
+.btn-7:after {
+  width: 0%;
+  height: 2px;
+}
+.btn-7:hover{
+  color: rgba(251,75,2,1);
+  background: transparent;
+}
+.btn-7:hover:before {
+  height: 100%;
+}
+.btn-7:hover:after {
+  width: 100%;
+}
+.btn-7 span:before,
+.btn-7 span:after {
+    position: absolute;
+    content: "";
+}
+
+.div-weekday-menu {
+    background-color: #e5e5e5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 20vh; /* Установите высоту вьюпорта или контейнера по своему выбору */
+}
+
+.btn-12 {
+  text-align: center;
+  display: inline-block;
+  padding: 15px 40px;
+  cursor: pointer;
+  letter-spacing: 2px;
+  position:relative;
+  overflow:hidden;
+  margin: 0 20px;
+}
+
+.btn-12:before {
+  content: "";
+  position: absolute;
+  width: 0;
+  background : #696969;
+  left: 45%;
+  height: 2px;
+  bottom: 0;
+  transition: all .3s;
+  opacity: 0.7;
+}
+
+.btn-12:hover:before {
+  width: 100%;
+  left:0;
 }

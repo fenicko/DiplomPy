@@ -49,8 +49,15 @@ def profile(request):
     else:
         form = UserProfileForm(instance=request.user)
 
+    basket = Basket.objects.first()  # Получаем объект корзины
+    if basket:
+        model_name = basket.content_type.model_class()._meta.model_name
+    else:
+        model_name = None
+
     context = {'title': 'Профиль',
                'form': form,
+               'model_name': model_name,
                'baskets': Basket.objects.filter(users=request.user),
                }
     return render(request, 'users/profile2.html', context=context)

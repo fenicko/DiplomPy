@@ -40,7 +40,7 @@ class UserProfileForm(UserChangeForm):
     last_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'u-grey-5 u-input u-input-rectangle u-radius-50'}))
     image = forms.ImageField(widget=forms.FileInput(), required=False)
     username = forms.CharField(widget=forms.TextInput(attrs={'class': 'u-grey-5 u-input u-input-rectangle u-radius-50', 'readonly': True}))
-    email = forms.CharField(widget=forms.TextInput(attrs={'readonly': True, 'class': 'u-grey-5 u-input u-input-rectangle u-radius-50'}))
+    email = forms.CharField(widget=forms.TextInput(attrs={'class': 'u-grey-5 u-input u-input-rectangle u-radius-50'}))
 
     class Meta:
         model = User

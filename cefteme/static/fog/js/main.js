@@ -1,19 +1,10 @@
-// window.onload = function() {
-//   var paragraphs = document.getElementsByClassName('card-text');
-//   for (var i = 0; i < paragraphs.length; i++) {
-//     var paragraph = paragraphs[i];
-//     var text = paragraph.innerText;
-//     var newText = text.slice(0, -1) + '.';
-//     paragraph.innerText = newText;
-//   }
-// };
-
 function reloadPage() {
   setTimeout(function() {
      location.reload();
-  }, 10);
+  }, 100);
 }
 
+//Update sum dish
 // Загрузка jQuery из CDN
 var script = document.createElement('script');
 script.src = 'https://code.jquery.com/jquery-3.6.0.min.js';
@@ -36,7 +27,6 @@ function getCookie(name) {
   return cookieValue;
 }
 
-// Ожидание загрузки документа
 document.addEventListener('DOMContentLoaded', function() {
   // Назначение обработчика события на изменение поля ввода с именем "basketID"
   var inputFields = document.getElementsByName('basketID');
@@ -53,24 +43,27 @@ document.addEventListener('DOMContentLoaded', function() {
       xhr.open('POST', basketUpdateURL, true);
       xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
       xhr.setRequestHeader('X-CSRFToken', csrftoken);
-      xhr.onload = function() {
-        if (xhr.status === 200) {
-          // Обработка успешного ответа от сервера
-          location.reload();
-          var response = JSON.parse(xhr.responseText);
-          if (response && response.basketSum) {
-            basket.sum = response.basketSum;
-
-            // Дополнительные действия после успешного обновления basket.sum
-          }
-        } else {
-          // Обработка ошибки, если необходимо
-        }
-      };
-      xhr.onerror = function() {
-        // Обработка ошибки, если необходимо
-      };
+      location.reload();
       xhr.send('basketId=' + encodeURIComponent(basketId) + '&quantity=' + encodeURIComponent(quantity));
     });
   }
 });
+
+//Update TotalSum
+var paragraphs = document.getElementsByClassName('sum');
+var totalSum = 0;
+
+for (var i = 0; i < paragraphs.length; i++) {
+  var paragraph = paragraphs[i];
+
+  var text = paragraph.innerText;
+
+  var sumText = text.replace(' руб.', '');
+
+  var sum = parseFloat(sumText);
+  totalSum += sum;
+}
+
+var totalSumElement = document.getElementById('totalSum');
+
+totalSumElement.innerText = totalSum + ' руб.';
