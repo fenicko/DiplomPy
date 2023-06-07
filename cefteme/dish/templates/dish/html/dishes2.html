@@ -97,7 +97,7 @@
                                     {% endif %}
                                 {% endfor %}
                             </h6>
-                            <h5>Цена: {{ product.price }}p.</h5>
+                            <h5>Цена: {{ product.price }} p.</h5>
 
 {#                            <script>#}
 {#                                window.onload = function() {#}
@@ -146,7 +146,7 @@
                                     {% endif %}
                                 {% endfor %}
                             </h6>
-                            <h5>Цена: {{ product.calculate_complex_dish_price }}p.</h5>
+                            <h5>Цена: {{ product.calculate_complex_dish_price }} p.</h5>
                         </div>
                         <div class="card-footer text-center">
                             <a class="btn btn-outline-success" href="{% url 'dish:basket_add' product.slug %}">

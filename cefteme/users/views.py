@@ -49,7 +49,7 @@ def profile(request):
     else:
         form = UserProfileForm(instance=request.user)
 
-    basket = Basket.objects.first()  # Получаем объект корзины
+    basket = BasketItem.objects.first()  # Получаем объект корзины
     if basket:
         model_name = basket.content_type.model_class()._meta.model_name
     else:
@@ -58,7 +58,8 @@ def profile(request):
     context = {'title': 'Профиль',
                'form': form,
                'model_name': model_name,
-               'baskets': Basket.objects.filter(users=request.user),
+               'baskets': BasketItem.objects.filter(basket__users=request.user, basket__its_bay=False),
+               'its_bay': Basket.objects.filter(users=request.user),
                }
     return render(request, 'users/profile2.html', context=context)
 

@@ -6,6 +6,9 @@ admin.site.register(Ingredients)
 admin.site.register(Structure)
 admin.site.register(Reviews)
 admin.site.register(DishComplexDish)
+admin.site.register(Order)
+admin.site.register(Basket)
+admin.site.register(BasketItem)
 
 
 @admin.register(MenuItem)
@@ -38,7 +41,7 @@ class TypeDishAdmin(admin.ModelAdmin):
 @admin.register(Dish)
 class DishAdmin(admin.ModelAdmin):
     list_display = ('name', 'price', 'id_type_dish')
-    fields = ('name', 'slug', 'id_type_dish', 'image', 'price')
+    fields = ('name', 'slug', 'quantity', 'id_type_dish', 'image', 'price')
     search_fields = ('name',)
     prepopulated_fields = {"slug": ('name',)}
 

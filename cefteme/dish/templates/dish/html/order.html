@@ -1,0 +1,57 @@
+{% extends 'dish/html/base2.html' %}
+{% load static %}
+
+{% block meta %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="Ваши заказы">
+    <meta name="description" content="">
+    <title>Заказы</title>
+    <link rel="stylesheet" href="{% static 'fog/css/nicepage.css' %}" media="screen">
+<link rel="stylesheet" href="{% static 'fog/css/Заказы.css' %}" media="screen">
+    <script class="u-script" type="text/javascript" src="{% static 'fog/js/jquery.js' %}" defer=""></script>
+    <script class="u-script" type="text/javascript" src="{% static 'fog/js/nicepage.js' %}" defer=""></script>
+    <meta name="generator" content="Nicepage 5.10.10, nicepage.com">
+    <link id="u-theme-google-font" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i|Open+Sans:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i">
+{% endblock %}
+    
+    
+{% block content %}
+    <section class="u-clearfix u-section-1" id="sec-f47c">
+      <div class="u-clearfix u-sheet u-sheet-1">
+        <h2 class="u-text u-text-default u-text-1">Ваши заказы</h2>
+        <div class="u-list u-list-1">
+        <div style="overflow: auto; height: 90vh">
+          <div class="u-repeater u-repeater-1">
+
+              {% for foo in order %}
+                  <div class="u-container-style u-grey-5 u-list-item u-repeater-item">
+              <div class="u-container-layout u-similar-container u-container-layout-1">
+                <h3 class="u-text u-text-default u-text-2">Заказа №{{ foo.pk }}</h3>
+                <ul class="u-text u-text-default u-text-3">
+                    <ul>
+                        {% for dish_name in foo.get_dish_names %}
+                            <li>{{ dish_name }}</li>
+                        {% endfor %}
+                        {% for dish_name in foo.get_complex_dish_names %}
+                            <li>{{ dish_name }}</li>
+                        {% endfor %}
+                    </ul>
+                </ul>
+                <h3 class="u-text u-text-default u-text-4">Код заказа: {{ foo.code_order }}</h3>
+                <h5 class="u-text u-text-default u-text-5">Сумма заказа: {{ foo.price }} р.</h5>
+              </div>
+            </div>
+              {% endfor %}
+
+            <div class="u-container-style u-grey-5 u-list-item u-repeater-item">
+              <div class="u-container-layout u-similar-container u-container-layout-2">
+              </div>
+            </div>
+
+          </div>
+        </div>
+        </div>
+      </div>
+    </section>
+{% endblock %}

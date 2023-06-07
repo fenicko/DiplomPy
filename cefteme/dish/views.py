@@ -10,6 +10,7 @@ import json
 
 from dish.forms import *
 from dish.models import *
+from django.db.models.signals import pre_delete
 
 weekday_names = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье']
 get_index_weekday = 1
@@ -132,22 +133,29 @@ def dish(request, dish_slug):
 def basket_add(request, dish_slug):
     try:
         dish = Dish.objects.get(slug=dish_slug)
-        content_type = ContentType.objects.get_for_model(dish)
+        content_type = ContentType.objects.get_for_model(Dish)
+        content_object = dish
     except Dish.DoesNotExist:
         try:
             dish = ComplexDish.objects.get(slug=dish_slug)
-            content_type = ContentType.objects.get_for_model(dish)
+            content_type = ContentType.objects.get_for_model(ComplexDish)
+            content_object = dish
         except ComplexDish.DoesNotExist:
             return HttpResponseNotFound("Dish not found")
 
-    baskets = Basket.objects.filter(users=request.user, content_type=content_type, object_id=dish.id)
+    basket, created = Basket.objects.get_or_create(
+        users=request.user,
+        its_bay=False,
+    )
 
-    if not baskets.exists():
-        Basket.objects.create(users=request.user, content_type=content_type, object_id=dish.id, quantity=1)
+    basket_items = BasketItem.objects.filter(basket=basket, content_type=content_type, object_id=content_object.id)
+
+    if not basket_items.exists():
+        BasketItem.objects.create(basket=basket, content_type=content_type, object_id=content_object.id, quantity=1)
     else:
-        basket = baskets.first()
-        basket.quantity += 1
-        basket.save()
+        basket_item = basket_items.first()
+        basket_item.quantity += 1
+        basket_item.save()
 
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
@@ -158,13 +166,13 @@ def basket_update(request):
         quantity = request.POST.get('quantity')
 
         # Обновите запись в БД с использованием полученных данных
-        basket = get_object_or_404(Basket, pk=basket_id)
+        basket = get_object_or_404(BasketItem, pk=basket_id)
         basket.quantity = quantity
         basket.save()
 
-        updated_sum_dish = basket.sum_dish()
-        updated_sum_complex_dish = basket.sum_complex_dish()
-        total_sum = updated_sum_dish + updated_sum_complex_dish
+        updated_sum_dish = basket.get_dish_price()
+        updated_sum_complex_dish = basket.get_complex_dish_price()
+        total_sum = Decimal(updated_sum_dish + updated_sum_complex_dish).quantize(Decimal('0.00'))
         print(total_sum)
 
         response_data = {
@@ -180,9 +188,38 @@ def basket_update(request):
 
 @login_required
 def basket_remove(request, basket_id):
-    basket = Basket.objects.get(id=basket_id)
+    basket = BasketItem.objects.get(id=basket_id)
     basket.delete()
     return HttpResponseRedirect(reverse('users:profile'))
+
+
+@login_required
+def order(request):
+    if request.method == 'POST':
+
+        paragraph_content = request.POST.get('paragraph_content')
+        clear_text = paragraph_content.replace(',', '.')
+        total_price = Decimal(clear_text).quantize(Decimal('0.00'))
+
+        user = request.user
+        baskets = Basket.objects.get(users=user, its_bay=False)
+
+        order = Order()
+        order.user_id = user
+        order.baskets = baskets
+        order.code_order = Order.generate_code()
+        order.price = total_price
+        order.save()
+
+        baskets.its_bay = True
+        baskets.save()
+
+
+    context = {
+        'order': Order.objects.all(),
+        'order_f': Order.objects.first(),
+    }
+    return render(request, 'dish/html/order.html', context=context)
 
 
 def pageNotFound(request, exception):

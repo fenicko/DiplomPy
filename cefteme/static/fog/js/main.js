@@ -60,10 +60,32 @@ for (var i = 0; i < paragraphs.length; i++) {
 
   var sumText = text.replace(' руб.', '');
 
-  var sum = parseFloat(sumText);
+  sum = parseFloat(sumText);
   totalSum += sum;
 }
 
 var totalSumElement = document.getElementById('totalSum');
 
-totalSumElement.innerText = totalSum + ' руб.';
+// totalSumElement.innerText = totalSum.toFixed(2) + ' руб.';
+
+
+//Get totalSum in View
+document.getElementById('submit_button').addEventListener('click', function() {
+  var paragraphContent = document.getElementById('totalSum').textContent;
+
+  var csrftoken = getCookie('csrftoken');
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', '/dishes/order/');
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.setRequestHeader('X-CSRFToken', csrftoken);
+  xhr.onload = function() {
+    if (xhr.status === 200) {
+    } else {
+      // Обработка ошибки
+    }
+  };
+  xhr.onerror = function() {
+    // Обработка ошибки
+  };
+  xhr.send('paragraph_content=' + encodeURIComponent(paragraphContent));
+});

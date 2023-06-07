@@ -15,4 +15,5 @@ urlpatterns = [
     path('baskets/add/<slug:dish_slug>/', basket_add, name='basket_add'),
     path('baskets/update/', basket_update, name='basket_update'),
     path('baskets/remove/<int:basket_id>/', basket_remove, name='basket_remove'),
+    path('order/', order, name='order'),
 ]
