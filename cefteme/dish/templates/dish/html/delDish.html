@@ -1,0 +1,29 @@
+{% extends 'admin/base.html' %}
+
+{% block content %}
+  <div class="model-list">
+    <h2>Список записей</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Поле 1</th>
+          <th>Поле 2</th>
+          <!-- Добавьте другие заголовки полей, если необходимо -->
+        </tr>
+      </thead>
+      <tbody>
+        {% for record in records %}
+          <tr>
+            <td>{{ record.field1 }}</td>
+            <td>{{ record.field2 }}</td>
+            <!-- Добавьте другие ячейки данных полей, если необходимо -->
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="2">Нет записей.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

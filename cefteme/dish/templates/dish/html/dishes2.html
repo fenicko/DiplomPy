@@ -52,7 +52,6 @@
                 {% endfor %}
             </div>
         </div>
-        <!-- /.col-lg-3 -->
 
         <div class="col-lg-9">
 
@@ -98,24 +97,6 @@
                                 {% endfor %}
                             </h6>
                             <h5>Цена: {{ product.price }} p.</h5>
-
-{#                            <script>#}
-{#                                window.onload = function() {#}
-{#                                    var paragraphs = document.getElementsByClassName('card-text');#}
-{#                                    for (var i = 0; i < paragraphs.length; i++) {#}
-{#                                      var paragraph = paragraphs[i];#}
-{#                                      var text = paragraph.innerText;#}
-{#                                      var newText = text.slice(0, -1) + '.';#}
-{#                                      paragraph.innerText = newText;#}
-{#                                    }#}
-{#                                };#}
-{#                            </script>#}
-{##}
-{#                            <p class="card-text" id="myParagraph">#}
-{#                                {% for get_ingredient in product.get_ingredients %}#}
-{#                                    {{ get_ingredient.name }}{% if not loop.last %},{% endif %}#}
-{#                                {% endfor %}#}
-{#                            </p>#}
                         </div>
                         <div class="card-footer text-center">
                             <a class="btn btn-outline-success" href="{% url 'dish:basket_add' product.slug %}">

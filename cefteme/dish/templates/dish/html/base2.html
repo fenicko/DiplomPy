@@ -35,7 +35,9 @@
                     <a class="u-button-style u-nav-link u-text-active-palette-1-base u-text-hover-palette-2-base" href="{% url 'dishes:index' %}" style="padding: 10px 20px;">Меню</a>
                 </li>
                 <li class="u-nav-item">
+                    {% if user.is_authenticated  %}
                     <a class="u-button-style u-nav-link u-text-active-palette-1-base u-text-hover-palette-2-base" href="{% url 'dishes:order' %}" style="padding: 10px 20px;">Заказ</a>
+                    {% endif %}
                 </li>
                 <li class="u-nav-item">
                     {% if user.is_superuser or user.is_staff %}
@@ -43,7 +45,11 @@
                     {% endif %}
                 </li>
                 <li class="u-nav-item">
-                    <a class="u-button-style u-nav-link u-text-active-palette-1-base u-text-hover-palette-2-base" href="{% url 'users:profile' %}" style="padding: 10px 20px;">Профиль</a>
+                    {% if user.is_authenticated  %}
+                        <a class="u-button-style u-nav-link u-text-active-palette-1-base u-text-hover-palette-2-base" href="{% url 'users:profile' %}" style="padding: 10px 20px;">Профиль</a>
+                    {% else %}
+                        <a class="u-button-style u-nav-link u-text-active-palette-1-base u-text-hover-palette-2-base" href="{% url 'users:profile' %}" style="padding: 10px 20px;">Войти</a>
+                    {% endif %}
                 </li>
                 <li class="u-nav-item">
                     {% if user.is_superuser or user.is_staff %}
@@ -64,7 +70,9 @@
                         <a class="u-button-style u-nav-link" href="{% url 'dishes:index' %}">Меню</a>
                     </li>
                     <li class="u-nav-item">
+                        {% if user.is_authenticated  %}
                         <a class="u-button-style u-nav-link" href="{% url 'dishes:order' %}">Заказ</a>
+                        {% endif %}
                     </li>
                     <li class="u-nav-item">
                         {% if user.is_superuser or user.is_staff %}
@@ -72,7 +80,11 @@
                         {% endif %}
                     </li>
                     <li class="u-nav-item">
+                         {% if user.is_authenticated  %}
                             <a class="u-button-style u-nav-link" href="{% url 'users:profile' %}">Профиль</a>
+                         {% else %}
+                             <a class="u-button-style u-nav-link" href="{% url 'users:profile' %}">Войти</a>
+                        {% endif %}
                     </li>
                     <li class="u-nav-item">
                         {% if user.is_superuser or user.is_staff %}
@@ -100,8 +112,8 @@
         <div class="u-container-layout u-container-layout-1">
           <h2 class="u-align-center u-text u-text-default u-text-1">Редактор блюд</h2>
           <p class="u-align-center u-text u-text-default u-text-2">Что вы хотите сделать?</p>
-          <a href="" class="u-border-none u-btn u-btn-round u-button-style u-hover-palette-1-dark-1 u-palette-1-base u-radius-50 u-btn-1">добавить</a>
-          <a href="" class="u-btn u-btn-round u-button-style u-hover-palette-1-light-1 u-palette-1-base u-radius-50 u-btn-2">удалить</a>
+          <a href="{% url 'add_dish' %}" class="u-border-none u-btn u-btn-round u-button-style u-hover-palette-1-dark-1 u-palette-1-base u-radius-50 u-btn-1">добавить</a>
+          <a href="{% url 'del_dish' %}" class="u-btn u-btn-round u-button-style u-hover-palette-1-light-1 u-palette-1-base u-radius-50 u-btn-2">удалить</a>
         </div>
           <button class="u-dialog-close-button u-icon u-text-grey-40 u-icon-1">
             <svg class="u-svg-link" preserveAspectRatio="xMidYMin slice" viewBox="0 0 348.333 348.334" style="">

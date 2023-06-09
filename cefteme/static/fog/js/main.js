@@ -4,13 +4,12 @@ function reloadPage() {
   }, 100);
 }
 
-//Update sum dish
-// Загрузка jQuery из CDN
+
 var script = document.createElement('script');
 script.src = 'https://code.jquery.com/jquery-3.6.0.min.js';
 document.head.appendChild(script);
 
-// Получение CSRF-токена из cookie
+
 function getCookie(name) {
   var cookieValue = null;
   if (document.cookie && document.cookie !== '') {
@@ -66,10 +65,7 @@ for (var i = 0; i < paragraphs.length; i++) {
 
 var totalSumElement = document.getElementById('totalSum');
 
-// totalSumElement.innerText = totalSum.toFixed(2) + ' руб.';
 
-
-//Get totalSum in View
 document.getElementById('submit_button').addEventListener('click', function() {
   var paragraphContent = document.getElementById('totalSum').textContent;
 

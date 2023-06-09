@@ -53,6 +53,7 @@ def dishes(request, type_slug=None, weekday_slug=None):
                'type': TypeDish.objects.all(),
                'weekday': today_name,
                'weekdays': Weekday.objects.all(),
+               'menu': Menu.objects.all(),
                'model': page_dish,
                'review': Reviews.objects.all(),
                'select_model': select_model,
@@ -223,4 +224,19 @@ def order(request):
 
 
 def pageNotFound(request, exception):
-    return HttpResponseNotFound('<h1>Страница не найдена</h1>')
+    return render(request, 'dish/html/404_error.html', context={'except': exception})
+
+
+def edit_record(request, record_id):
+    record = Dish.objects.get(pk=record_id)
+    return render(request, 'dish/html/redactDish.html', {'record': record})
+
+
+def add_dish(request):
+    return render(request, 'dish/html/add_dish.html')
+
+
+def del_dish(request):
+    return render(request, 'dish/html/delDish.html')
+
+

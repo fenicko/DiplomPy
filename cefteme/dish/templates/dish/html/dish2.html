@@ -51,12 +51,6 @@
                               <p class="u-text u-text-default u-text-4">
                                     Состав:
                                   {% for get_ingredient in dish.get_ingredients %}
-{#                                    <a href="{% url 'dishes:action_ingredient' dish.slug get_ingredient.pk %}" class="u-btn u-btn-round u-button-style u-hover-palette-1-light-1 u-palette-1-light-2 u-radius-50 u-btn-1 ingredient-link">#}
-{#                                        {{ get_ingredient.name }}#}
-{#                                        <span class="u-file-icon u-icon u-icon-2">#}
-{#                                            <img src="{% static 'fog/img/1828666.png' %}" alt="">#}
-{#                                        </span>#}
-{#                                    </a>#}
                                       <div class="rounded-button">
                                         <a href="#">
                                         {{ get_ingredient.name }}
@@ -70,7 +64,7 @@
 
                             </div>
                           </div>
-                          <a href="" class="u-border-2 u-border-hover-palette-1-base u-border-palette-1-base u-btn u-btn-round u-button-style u-hover-palette-1-base u-none u-radius-50 u-btn-2">Редактировать</a>
+                          <a href="{% url 'edit_record' dish.pk %}" class="u-border-2 u-border-hover-palette-1-base u-border-palette-1-base u-btn u-btn-round u-button-style u-hover-palette-1-base u-none u-radius-50 u-btn-2">Редактировать</a>
                         </div>
 
                       {% else %}
@@ -94,7 +88,6 @@
                               <p class="u-text u-text-default u-text-4">
                                     Состав:
                                   {% for get_dish in dish.get_dishes %}
-{#                                      {% url 'dishes:action_ingredient' dish.slug get_ingredient.pk %}#}
                                     <div class="rounded-button">
                                         <a href="#">
                                         {{ get_dish.name }}
@@ -108,14 +101,11 @@
 
                             </div>
                           </div>
-                          <a href="" class="u-border-2 u-border-hover-palette-1-base u-border-palette-1-base u-btn u-btn-round u-button-style u-hover-palette-1-base u-none u-radius-50 u-btn-2">Редактировать</a>
+                          <a href="{% url 'add_comp_dish' %}" class="u-border-2 u-border-hover-palette-1-base u-border-palette-1-base u-btn u-btn-round u-button-style u-hover-palette-1-base u-none u-radius-50 u-btn-2">
+                              Редактировать</a>
                         </div>
-
                       {% endif %}
-
                       </div>
-
-{#                    Ингридиенты и блюда#}
                       <div class="u-container-style u-grey-5 u-layout-cell u-size-30 u-layout-cell-2">
 
                       {% if select_model == 'dish' %}
@@ -125,16 +115,19 @@
                             <div class="scrollable-ingredient">
                                 <ul class="u-align-center u-text u-text-default u-text-6">
                               {% for ingredient in dish.filter_ingredients %}
-
+                                {% if user.is_superuser or user.is_staff %}
                                       <li class="no-bullets">
                                           <a href="{% url 'dishes:action_ingredient' dish.slug ingredient.pk %}">{{ ingredient.name }}</a>
                                       </li>
-
+                                {% else %}
+                                    <li class="no-bullets">
+                                          <p>{{ ingredient.name }}</p>
+                                      </li>
+                                {% endif %}
                               {% endfor %}
                           </ul>
                             </div>
                         </div>
-
                       {% else %}
 
                           <div class="u-container-layout u-container-layout-3">
@@ -151,9 +144,7 @@
                           </ul>
                             </div>
                         </div>
-
                       {% endif %}
-
                       </div>
                     </div>
                   </div>
@@ -165,11 +156,14 @@
                             <form action="{% url 'dish:dish' dish.slug %}" method="post">
                            {% csrf_token %}
 
+                            {% if not user.is_authenticated  %}
+                                <h4 style="color: red">Вы не авторизованы!</h4>
+                            {% endif %}
+
                             <div>{{ form.non_field_errors }}</div>
 
                             {% for f in form %}
                                 <p><label for="{{ f.id_for_label }}">{{ f.label }}: </label>{{ f }}</p>
-                                <div class="error-decor">{{ f.errors }}</div>
                             {% endfor %}
 
                             <button class="c-button" type="submit">Отправить</button>
